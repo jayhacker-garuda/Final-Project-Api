@@ -108,38 +108,64 @@ class BlogPostController extends Controller
         // ]);
         $data = BlogCategory::find($id);
 
-        (!$data)
-        ? $error = 'No Data Found'
-        : null;
+        if ($data) {
+            return response()->json([
+                'body' => $data,
+                'message' => 'Category Successfully Loaded'
+            ],200);
 
+        }
 
         return response()->json([
-            'body' => $data,
-            'message' => ($error) ? $error : 'Category Successfully Loaded'
-        ],200);
+                'message' => 'Something went wrong'
+            ],404);
+
+
     }
     public function update_blog_category(Request $request, $id)
     {
-
-        BlogCategory::where('id', $id)->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name)
+        $request->validate([
+           'name' => 'required'
         ]);
+
+        // BlogCategory::where('id', $id)->update([
+        //     'name' => $request->name,
+        //     'slug' => Str::slug($request->name)
+        // ]);
+
+        $find = BlogCategory::find($id);
+        // dd($find);
+        if ($find) {
+            $find->name = $request->name;
+            $find->slug = Str::slug($request->name);
+            $find->save();
+            return response()->json([
+                'message' => 'Category Successfully Updated'
+            ],200);
+        }
+
+        return response()->json([
+                'message' => 'Nth to update here'
+            ],200);
         // $data = BlogCategory::where('id', $id)->get();
 
 
-        return response()->json([
-            'message' => 'Category Successfully Updated'
-        ],200);
     }
 
     public function delete_blog_category($id)
     {
-        BlogCategory::find($id)->delete();
-
-        return response()->json([
+        $deleted =  BlogCategory::find($id);
+        // dd($deleted);
+        if ($deleted) {
+            $deleted->delete();
+            return response()->json([
             'message' => 'Category Successfully Deleted'
         ],200);
+        }
+
+        return response()->json([
+            'message' => 'Cant delete whats not there'
+        ],404);
     }
 
     public function all_blog_category()
