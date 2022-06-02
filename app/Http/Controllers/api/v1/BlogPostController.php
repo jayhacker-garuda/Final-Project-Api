@@ -64,6 +64,9 @@ class BlogPostController extends Controller
             $filename = time().'.'.$extension;
             $request->image->storeAs('blog-images', $filename, 'public');
         }
+
+
+
         auth()->user()->blog_posts()->create([
             'title' => $request->title,
             'content' => $request->content,

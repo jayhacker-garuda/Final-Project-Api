@@ -24,11 +24,13 @@ use App\Http\Controllers\api\v1\RegisterController;
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/register', [RegisterController::class, 'register']);
 
+Route::get('/get-blog-category', [BlogPostController::class, 'all_blog_category']);
+Route::get('/all-blog-post', [BlogPostController::class, 'all_blog_posts']);
 
 Route::middleware(['auth:sanctum'])->group( function(){
 
 
-    Route::get('/logout', function(Request $request) {
+    Route::post('/logout', function(Request $request) {
 
         $request->user()->tokens()->delete();
 
@@ -42,13 +44,11 @@ Route::middleware(['auth:sanctum'])->group( function(){
 
 
     Route::post('/store-blog-category', [BlogPostController::class, 'save_blog_category'])->middleware(['ability:admin']);
-    Route::get('/get-blog-category', [BlogPostController::class, 'all_blog_category']);
     Route::get('/edit-blog-category/{id}', [BlogPostController::class, 'edit_blog_category'])->middleware(['ability:admin']);
     Route::post('/update-blog-category/{id}', [BlogPostController::class, 'update_blog_category'])->middleware(['ability:admin']);
     Route::post('/delete-blog-category/{id}', [BlogPostController::class, 'delete_blog_category'])->middleware(['ability:admin']);
 
-    Route::get('/all-blog-post', [BlogPostController::class, 'all_blog_posts']);
     Route::get('/get-blog-post/{id}', [BlogPostController::class, 'blog_post_byID']);
     Route::post('/store-blog-post', [BlogPostController::class, 'blog_post_save'])->middleware(['ability:admin']);
 
-});
+}) ;

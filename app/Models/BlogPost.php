@@ -9,7 +9,7 @@ class BlogPost extends Model
 {
     use HasFactory;
     protected $guarded = [];
-    protected $with = ['blog_category','blogger'];
+    
 
     // protected $fillable = [
     //     'user_id',

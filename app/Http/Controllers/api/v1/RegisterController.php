@@ -23,7 +23,7 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             return response()->json([
                 'errors' => $validator->errors(),
-            ]);
+            ],401);
         }else {
             $user = User::create([
                 'name' => $request->name,
